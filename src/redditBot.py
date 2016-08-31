@@ -1,19 +1,24 @@
 import praw
-import os.path
+import youtube_dl
+
 
 r = praw.Reddit(user_agent='LTTscraper')
-submissions = r.get_subreddit('listentothis').get_top_from_week(limit=15)
+submissions = r.get_subreddit('listentothis').get_top_from_week(limit=10)
 
 save_path = "C:\\Users\\Sri\\Desktop\\listentothis.txt"
-file = open(save_path, "r+")
+dl_path = "C:\\Users\\Sri\\Desktop\\listentothisdls"
 
+ydl_opts = {
+    'format': 'bestaudio/best',
+    'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'mp3',
+        'preferredquality': '256',
+    }],
+}
 for s in submissions:
 
-    file.write(str(s))
-    file.write("\n")
-    file.write(s.url)
-    file.write("\n")
-    file.write("\n")
+    if "youtube" in s.url:
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:  #import downloader and save as ydl variable
+            ydl.download([s.url]) #download audio from URL of each submission
 
-
-file.close()
