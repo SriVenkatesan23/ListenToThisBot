@@ -4,6 +4,7 @@ import httplib2
 import os
 import sys
 from urllib.parse import urlparse
+from urllib.parse import parse_qs
 
 
 from apiclient.discovery import build
@@ -85,7 +86,7 @@ def video_id(link):
         return query.path[1:]
     if query.hostname in ('www.youtube.com', 'youtube.com'):
         if query.path == '/watch':
-            p = urlparse.parse_qs(query.query)
+            p = parse_qs(query.query)
             return p['v'][0]
         if query.path[:7] == '/embed/':
             return query.path.split('/')[2]
