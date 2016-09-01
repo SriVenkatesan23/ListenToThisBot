@@ -63,7 +63,7 @@ playlists_insert_response = youtube.playlists().insert(
 ).execute()
 
 def add_video(youtube, videoID, playlistID):
-    add_video_request = youtube.playlistItem().insert(
+    add_video_request = youtube.playlistItems().insert(
         part="snippet",
         body={
             'snippet': {
@@ -95,16 +95,6 @@ def video_id(link):
     return None
 
 
-
-
 for s in submissions:
     if "youtube" in s.url:
         add_video(youtube, video_id(s.url), playlists_insert_response["id"])
-
-
-
-
-
-
-
-
