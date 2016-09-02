@@ -1,33 +1,26 @@
 import praw
-import youtube_dl
 import httplib2
 import os
 import sys
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
-
-
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser
 from oauth2client.tools import run_flow
-
+from datetime import datetime
 
 
 
 r = praw.Reddit(user_agent='LTTscraper')
-submissions = r.get_subreddit('listentothis').get_top_from_week(limit=10)
+submissions = r.get_subreddit('listentothis').get_top_from_week(limit=15)
 CLIENT_SECRETS_FILE = "keys.json"
 MISSING_CLIENT_SECRETS_MESSAGE = """
-WARNING: Please configure OAuth 2.0
-
 To make this sample run you will need to populate the client_secrets.json file
 found at:
    %s
-with information from the Developers Console
-https://console.developers.google.com/
 """ % os.path.abspath(os.path.join(os.path.dirname(__file__),
                                    CLIENT_SECRETS_FILE))
 
@@ -49,11 +42,16 @@ if credentials is None or credentials.invalid:
 youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
   http=credentials.authorize(httplib2.Http()))
 
+now = datetime.now();
+month = now.month
+year = now.year
+day = now.day
+
 playlists_insert_response = youtube.playlists().insert(
   part="snippet,status",
   body=dict(
     snippet=dict(
-      title="ListenToThis",
+      title="ListenToThis: Week of %s/%s/%s" %(month,day,year) ,
       description="A private playlist containing the week's top songs from r/ListenToThis"
     ),
     status=dict(
@@ -72,12 +70,9 @@ def add_video(youtube, videoID, playlistID):
                     'kind': 'youtube#video',
                     'videoId': videoID
                 }
-                # 'position': 0
             }
         }
     ).execute()
-
-
 
 def video_id(link):
 
