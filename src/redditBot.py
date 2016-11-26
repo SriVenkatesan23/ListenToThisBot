@@ -15,7 +15,11 @@ from datetime import datetime
 
 
 r = praw.Reddit(user_agent='LTTscraper')
-submissions = r.get_subreddit('listentothis').get_top_from_week(limit=15)
+
+print("Enter name of subreddit")
+sub = input()
+
+submissions = r.get_subreddit(sub).get_top_from_week(limit=25)
 CLIENT_SECRETS_FILE = "keys.json"
 MISSING_CLIENT_SECRETS_MESSAGE = """
 To make this sample run you will need to populate the client_secrets.json file
@@ -51,8 +55,8 @@ playlists_insert_response = youtube.playlists().insert(
   part="snippet,status",
   body=dict(
     snippet=dict(
-      title="ListenToThis: Week of %s/%s/%s" %(month,day,year) ,
-      description="A private playlist containing the week's top songs from r/ListenToThis"
+      title="%s: Week of %s/%s/%s" %(sub,month,day,year) ,
+      description="A private playlist containing the week's top songs from r/%s" %(sub)
     ),
     status=dict(
       privacyStatus="private"

@@ -1,0 +1,9 @@
+{
+  "installed": {
+    "client_id": "546370108623-uphd9o5j6ih5cfl6ehgtc5d46rft5l8d.apps.googleusercontent.com",
+    "client_secret":"3FVA_gw_f_kHHfNukAWxWQ3B",
+    "redirect_uris": ["546370108623-uphd9o5j6ih5cfl6ehgtc5d46rft5l8d.apps.googleusercontent.com"],
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://accounts.google.com/o/oauth2/token"
+  }
+}
